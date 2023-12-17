@@ -2,7 +2,7 @@
 Imports System.IO
 
 Public Class Form1
-    Private userIdToEdit As Integer = -1 ' Variable to store the user ID being edited
+    Private queueIdToEdit As Integer = -1 ' Variable to store the user ID being edited
 
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
         ' Load all data into DataGridView
@@ -15,10 +15,10 @@ Public Class Form1
         ' Handle the selection change in the DataGridView
         If dgvUsers.SelectedRows.Count > 0 Then
             ' Get the selected user's ID
-            Dim userId As Integer = Convert.ToInt32(dgvUsers.SelectedRows(0).Cells("user_ID").Value)
+            Dim queue_ID As Integer = Convert.ToInt32(dgvUsers.SelectedRows(0).Cells("queue_ID").Value)
 
             ' Load user data based on the selected ID
-            LoadUserDataById(userId)
+            LoadUserDataById(queue_ID)
         End If
     End Sub
 
@@ -27,10 +27,18 @@ Public Class Form1
     Private Sub dgvUsers_CellMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgvUsers.CellMouseClick
         Try
             With dgvUsers
-                txtName.Text = .CurrentRow.Cells("name").Value.ToString
-                txtEmail.Text = .CurrentRow.Cells("email").Value.ToString
+                txtQueue_ID.Text = .CurrentRow.Cells("queue_ID").Value.ToString
+                txtFname.Text = .CurrentRow.Cells("fname").Value.ToString
+                txtLname.Text = .CurrentRow.Cells("lname").Value.ToString
+                txtMi.Text = .CurrentRow.Cells("m_i").Value.ToString
+                txtCourse.Text = .CurrentRow.Cells("course").Value.ToString
+                txtYearlevel.Text = .CurrentRow.Cells("year_level").Value.ToString
+                txtGuardianName.Text = .CurrentRow.Cells("guardian_name").Value.ToString
+                txtGuardianContactNumber.Text = .CurrentRow.Cells("guardian_contact_number").Value.ToString
+                txtAddress.Text = .CurrentRow.Cells("address").Value.ToString
+                txtBirthday.Text = .CurrentRow.Cells("student_Birthday").Value.ToString
+                txtStudentNumber.Text = .CurrentRow.Cells("student_number").Value.ToString
                 LoadImage()
-                'txtN.Text = .CurrentRow.Cells("image").Value.ToString
             End With
         Catch ex As Exception
 
@@ -40,13 +48,13 @@ Public Class Form1
     'BUTTONS
 
     Private Sub btnSelect_Click(sender As Object, e As EventArgs) Handles btnSelect.Click
-        ' Load user data based on the entered ID from the TextBox
-        If Not String.IsNullOrEmpty(txtSelectID.Text) Then
-            Dim selectedUserId As Integer
-            If Integer.TryParse(txtSelectID.Text, selectedUserId) Then
-                LoadUserDataById(selectedUserId)
+        ' Load user data based on the queue_ID
+        If Not String.IsNullOrEmpty(txtSelectQueue_ID.Text) Then
+            Dim selectedQueue_ID As Integer
+            If Integer.TryParse(txtSelectQueue_ID.Text, selectedQueue_ID) Then
+                LoadUserDataById(selectedQueue_ID)
             Else
-                MessageBox.Show("Invalid user ID. Please enter a valid numeric ID.")
+                MessageBox.Show("Invalid queue_ID. Please enter a valid numeric ID.")
             End If
         End If
     End Sub
@@ -64,14 +72,14 @@ Public Class Form1
     'LOAD DATA INTO DATA GRID VIEW
 
     Private Sub LoadDataIntoDataGridView()
-        Dim connectionString As String = "server=localhost;user=root;password=;database=test_vb_connect;"
+        Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
 
         Try
             connection.Open()
 
             ' Perform database operations
-            Dim query As String = "SELECT * FROM users"
+            Dim query As String = "SELECT * FROM id_queue"
             Dim adapter As New MySqlDataAdapter(query, connection)
             Dim dataTable As New DataTable()
             adapter.Fill(dataTable)
@@ -88,17 +96,20 @@ Public Class Form1
 
     'LOAD USER DATA TO THE TEXT BOX
 
-    Private Sub LoadUserDataById(userId As Integer)
-        Dim connectionString As String = "server=localhost;user=root;password=;database=test_vb_connect;"
+    Private Sub LoadUserDataById(queueID As Integer)
+        Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
+
+        'debug
+        MessageBox.Show("Proceed")
 
         Try
             connection.Open()
 
             ' Perform database operations to get user data by ID
-            Dim query As String = "SELECT name, email FROM users WHERE user_ID = @userId"
+            Dim query As String = "SELECT * FROM id_queue WHERE queue_ID = @queue_ID"
             Dim command As New MySqlCommand(query, connection)
-            command.Parameters.AddWithValue("@userId", userId)
+            command.Parameters.AddWithValue("@queue_ID", queueID)
 
             Dim reader As MySqlDataReader = command.ExecuteReader()
 
@@ -108,13 +119,32 @@ Public Class Form1
 
             ' Display the result in TextBox
             If reader.Read() Then
-                txtName.Text = reader("name").ToString()
-                txtEmail.Text = reader("email").ToString()
+                txtQueue_ID.Text = reader("queue_ID").ToString()
+                txtFname.Text = reader("fname").ToString()
+                txtLname.Text = reader("lname").ToString()
+                txtMi.Text = reader("m_i").ToString()
+                txtCourse.Text = reader("course").ToString()
+                txtYearlevel.Text = reader("year_level").ToString()
+                txtGuardianName.Text = reader("guardian_name").ToString()
+                txtGuardianContactNumber.Text = reader("guardian_contact_number").ToString()
+                txtAddress.Text = reader("guardian_address").ToString()
+                txtBirthday.Text = reader("student_Birthday").ToString()
+                txtStudentNumber.Text = reader("student_number").ToString()
                 LoadImage()
 
             Else
-                txtName.Text = String.Empty
-                txtEmail.Text = String.Empty
+                txtQueue_ID.Text = String.Empty
+                txtFname.Text = String.Empty
+                txtLname.Text = String.Empty
+                txtMi.Text = String.Empty
+                txtCourse.Text = String.Empty
+                txtYearlevel.Text = String.Empty
+                txtGuardianName.Text = String.Empty
+                txtGuardianContactNumber.Text = String.Empty
+                txtAddress.Text = String.Empty
+                txtBirthday.Text = String.Empty
+                txtStudentNumber.Text = String.Empty
+                LoadImage()
                 MessageBox.Show("No data found for the selected user ID.")
             End If
 
@@ -130,17 +160,25 @@ Public Class Form1
 
     Private Sub EnableEditing()
         ' Enable editing in the TextBox controls
-        txtName.ReadOnly = False
-        txtEmail.ReadOnly = False
+        txtFname.ReadOnly = False
+        txtLname.ReadOnly = False
+        txtMi.ReadOnly = False
+        txtCourse.ReadOnly = False
+        txtYearlevel.ReadOnly = False
+        txtGuardianName.ReadOnly = False
+        txtGuardianContactNumber.ReadOnly = False
+        txtAddress.ReadOnly = False
+        txtBirthday.ReadOnly = False
+        txtStudentNumber.ReadOnly = False
 
 
         ' Store the user ID being edited from the txtSelectID TextBox
-        If Not String.IsNullOrEmpty(txtSelectID.Text) Then
-            userIdToEdit = Convert.ToInt32(txtSelectID.Text)
+        If Not String.IsNullOrEmpty(txtSelectQueue_ID.Text) Then
+            queueIdToEdit = Convert.ToInt32(txtSelectQueue_ID.Text)
         End If
 
         ' Debugging output
-        MessageBox.Show("EnableEditing clicked. userIdToEdit: " & userIdToEdit.ToString())
+        MessageBox.Show("EnableEditing clicked. queueIdToEdit: " & queueIdToEdit.ToString())
 
         btnSave.Enabled = True ' Enable the "Save" button
     End Sub
@@ -149,25 +187,45 @@ Public Class Form1
 
     Private Sub SaveChangesToDatabase()
         ' Save changes to the database based on the user ID being edited
-        If userIdToEdit <> -1 Then
-            Dim connectionString As String = "server=localhost;user=root;password=;database=test_vb_connect;"
+        If queueIdToEdit <> -1 Then
+            Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
             Dim connection As New MySqlConnection(connectionString)
 
             Try
                 connection.Open()
 
                 ' Perform database operations to update user data
-                Dim query As String = "UPDATE users SET name = @name, email = @email WHERE user_ID = @userId"
+                Dim query As String = "UPDATE id_queue SET fname = @fname, lname = @lname, m_i = @m_i, course = @course, " & _
+                                   "year_level = @year_level, guardian_name = @guardian_name, " & _
+                                   "guardian_contact_number = @guardian_contact_number, " & _
+                                   "guardian_address = @guardian_address, student_Birthday = @student_Birthday " & _
+                                   "WHERE queue_ID = @queue_ID"
+
                 Dim command As New MySqlCommand(query, connection)
-                command.Parameters.AddWithValue("@name", txtName.Text)
-                command.Parameters.AddWithValue("@email", txtEmail.Text)
-                command.Parameters.AddWithValue("@userId", userIdToEdit)
+                command.Parameters.AddWithValue("@fname", txtFname.Text)
+                command.Parameters.AddWithValue("@lname", txtLname.Text)
+                command.Parameters.AddWithValue("@m_i", txtMi.Text)
+                command.Parameters.AddWithValue("@course", txtCourse.Text)
+                command.Parameters.AddWithValue("@year_level", txtYearlevel.Text)
+                command.Parameters.AddWithValue("@guardian_name", txtGuardianName.Text)
+                command.Parameters.AddWithValue("@guardian_contact_number", txtGuardianContactNumber.Text)
+                command.Parameters.AddWithValue("@guardian_address", txtAddress.Text)
+                command.Parameters.AddWithValue("@student_Birthday", txtBirthday.Text)
+                command.Parameters.AddWithValue("@queue_ID", queueIdToEdit)
 
                 command.ExecuteNonQuery()
 
                 ' Disable editing after saving changes
-                txtName.ReadOnly = True
-                txtEmail.ReadOnly = True
+                txtFname.ReadOnly = True
+                txtLname.ReadOnly = True
+                txtMi.ReadOnly = True
+                txtCourse.ReadOnly = True
+                txtYearlevel.ReadOnly = True
+                txtGuardianName.ReadOnly = True
+                txtGuardianContactNumber.ReadOnly = True
+                txtAddress.ReadOnly = True
+                txtBirthday.ReadOnly = True
+                txtStudentNumber.ReadOnly = True
                 btnSave.Enabled = False
 
                 ' Refresh the DataGridView
@@ -214,31 +272,31 @@ Public Class Form1
     End Sub
 
     'BTN SAVE IMAGE'
-    
+
     Private Sub btnSaveImage_Click(sender As Object, e As EventArgs) Handles btnSaveImage.Click
         ' Enabling the edit
         EnableEditing()
 
         Try
-            If String.IsNullOrEmpty(txtPhoto.Text) OrElse String.IsNullOrEmpty(txtName.Text) Then
+            If String.IsNullOrEmpty(txtPhoto.Text) OrElse String.IsNullOrEmpty(txtFname.Text) Then
                 MessageBox.Show("You need to select an image first", "Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-            ElseIf Directory.Exists(Application.StartupPath & "\Profiles\" & txtName.Text & ".png") Then
-                Directory.Delete(txtName.Text)
+            ElseIf Directory.Exists(Application.StartupPath & "\Profiles\" & txtFname.Text & ".png") Then
+                Directory.Delete(txtFname.Text)
             Else
-                picImportStudent.Image.Save(Application.StartupPath & "\Profiles\" & txtName.Text & ".png")
+                picImportStudent.Image.Save(Application.StartupPath & "\Profiles\" & txtFname.Text & ".png")
 
-                If userIdToEdit <> -1 Then
-                    Dim connectionString As String = "server=localhost;user=root;password=;database=test_vb_connect;"
+                If queueIdToEdit <> -1 Then
+                    Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
                     Dim connection As New MySqlConnection(connectionString)
 
                     Try
                         connection.Open()
 
                         ' Perform database operations to update user data
-                        Dim query As String = "UPDATE users SET image = @image WHERE user_ID = @userId"
+                        Dim query As String = "UPDATE id_queue SET image = @image WHERE queue_ID = @queue_ID"
                         Dim command As New MySqlCommand(query, connection)
-                        command.Parameters.AddWithValue("@image", txtName.Text & ".png")
-                        command.Parameters.AddWithValue("@userId", userIdToEdit)
+                        command.Parameters.AddWithValue("@image", txtFname.Text & ".png")
+                        command.Parameters.AddWithValue("@queue_ID", queueIdToEdit)
 
                         command.ExecuteNonQuery()
 
@@ -264,23 +322,23 @@ Public Class Form1
 
 
 
-        Dim connectionString As String = "server=localhost;user=root;password=;database=test_vb_connect;"
+        Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
 
         Try
             connection.Open()
 
             ' Perform database operations to update user data
-            Dim query As String = "Select image FROM users WHERE name = @name"
+            Dim query As String = "Select image FROM id_queue WHERE queue_ID = @queue_ID"
             Dim command As New MySqlCommand(query, connection)
-            command.Parameters.AddWithValue("@name", txtName.Text)
+            command.Parameters.AddWithValue("@queue_ID", txtQueue_ID.Text)
 
             Dim adapter As New MySqlDataAdapter(command)
             Dim dataTable As New DataTable()
             adapter.Fill(dataTable)
 
             MessageBox.Show(dataTable.Rows.Count)
-            MessageBox.Show(txtName.Text)
+            MessageBox.Show(txtFname.Text)
             If dataTable.Rows.Count > 0 Then
                 ' debug
                 MessageBox.Show("Proceed")
@@ -290,7 +348,7 @@ Public Class Form1
                     picStudent.ImageLocation = Application.StartupPath & "\Profiles\" & dataTable.Rows(0).Item("image").ToString
                 End If
             End If
-            
+
 
 
         Catch ex As Exception
@@ -302,6 +360,12 @@ Public Class Form1
 
 
 
+    
+    
+    
+    
+    
+    
     
     
     
