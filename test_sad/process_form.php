@@ -10,10 +10,21 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$name = $_POST['name'];
-$email = $_POST['email'];
+$firstname = $_POST['firstname'];
+$MI = $_POST['MI'];
+$lastname = $_POST['lastname'];
+$course = $_POST['course'];
+$yearlevel = $_POST['yearlevel'];
 
-$sql = "INSERT INTO users (name, email) VALUES ('$name', '$email')";
+
+$studentaddress = $_POST['studentaddress'];
+$guardianName = $_POST['guardianName'];
+$cpNumber = $_POST['cpNumber'];
+$birthdate = $_POST['birthdate'];
+$yearlevel = $_POST['yearlevel'];
+
+
+$sql = "INSERT INTO users (firstname, MI, lastname, course, yearlevel, studentaddress, guardianName, cpNumber, birthdate) VALUES ('$firstname', '$MI','$lastname','$course','$yearlevel','$studentaddress','$guardianName','$cpNumber',''$birthdate)";
 
 if ($conn->query($sql) === TRUE) {
     echo "Record added successfully";
