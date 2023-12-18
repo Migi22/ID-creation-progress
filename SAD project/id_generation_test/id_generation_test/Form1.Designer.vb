@@ -56,6 +56,8 @@ Partial Class Form1
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtAddress = New System.Windows.Forms.TextBox()
         Me.lblAddress = New System.Windows.Forms.Label()
+        Me.btnGenerateIDCard = New System.Windows.Forms.Button()
+        Me.txtSearchBox = New System.Windows.Forms.TextBox()
         CType(Me.dgvUsers, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picStudent, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picImportStudent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -73,7 +75,7 @@ Partial Class Form1
         'dgvUsers
         '
         Me.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvUsers.Location = New System.Drawing.Point(676, 12)
+        Me.dgvUsers.Location = New System.Drawing.Point(656, 61)
         Me.dgvUsers.Name = "dgvUsers"
         Me.dgvUsers.RowTemplate.Height = 28
         Me.dgvUsers.Size = New System.Drawing.Size(654, 202)
@@ -351,11 +353,29 @@ Partial Class Form1
         Me.lblAddress.Text = "Address"
         Me.lblAddress.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'btnGenerateIDCard
+        '
+        Me.btnGenerateIDCard.Location = New System.Drawing.Point(44, 589)
+        Me.btnGenerateIDCard.Name = "btnGenerateIDCard"
+        Me.btnGenerateIDCard.Size = New System.Drawing.Size(109, 50)
+        Me.btnGenerateIDCard.TabIndex = 9
+        Me.btnGenerateIDCard.Text = "Generate ID Card"
+        Me.btnGenerateIDCard.UseVisualStyleBackColor = True
+        '
+        'txtSearchBox
+        '
+        Me.txtSearchBox.Location = New System.Drawing.Point(656, 29)
+        Me.txtSearchBox.Name = "txtSearchBox"
+        Me.txtSearchBox.Size = New System.Drawing.Size(654, 26)
+        Me.txtSearchBox.TabIndex = 10
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1356, 681)
+        Me.Controls.Add(Me.txtSearchBox)
+        Me.Controls.Add(Me.btnGenerateIDCard)
         Me.Controls.Add(Me.picImportStudent)
         Me.Controls.Add(Me.btnSaveImage)
         Me.Controls.Add(Me.btnBrowse)
@@ -432,5 +452,7 @@ Partial Class Form1
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txtAddress As System.Windows.Forms.TextBox
     Friend WithEvents lblAddress As System.Windows.Forms.Label
+    Friend WithEvents btnGenerateIDCard As System.Windows.Forms.Button
+    Friend WithEvents txtSearchBox As System.Windows.Forms.TextBox
 
 End Class

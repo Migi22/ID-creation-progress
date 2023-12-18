@@ -198,8 +198,8 @@ Public Class Form1
                 Dim query As String = "UPDATE id_queue SET fname = @fname, lname = @lname, m_i = @m_i, course = @course, " & _
                                    "year_level = @year_level, guardian_name = @guardian_name, " & _
                                    "guardian_contact_number = @guardian_contact_number, " & _
-                                   "guardian_address = @guardian_address, student_Birthday = @student_Birthday " & _
-                                   "WHERE queue_ID = @queue_ID"
+                                   "guardian_address = @guardian_address, student_Birthday = @student_Birthday, " & _
+                                   "student_number = @student_number WHERE queue_ID = @queue_ID"
 
                 Dim command As New MySqlCommand(query, connection)
                 command.Parameters.AddWithValue("@fname", txtFname.Text)
@@ -211,7 +211,11 @@ Public Class Form1
                 command.Parameters.AddWithValue("@guardian_contact_number", txtGuardianContactNumber.Text)
                 command.Parameters.AddWithValue("@guardian_address", txtAddress.Text)
                 command.Parameters.AddWithValue("@student_Birthday", txtBirthday.Text)
+                command.Parameters.AddWithValue("@student_number", txtStudentNumber.Text)
                 command.Parameters.AddWithValue("@queue_ID", queueIdToEdit)
+
+                'debug
+                MessageBox.Show(txtStudentNumber.Text)
 
                 command.ExecuteNonQuery()
 
@@ -232,6 +236,7 @@ Public Class Form1
                 LoadDataIntoDataGridView()
 
             Catch ex As Exception
+
                 MessageBox.Show("Error: " & ex.Message)
             Finally
                 connection.Close()
@@ -320,8 +325,6 @@ Public Class Form1
         'enable editing
         'EnableEditing()
 
-
-
         Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
 
@@ -359,14 +362,45 @@ Public Class Form1
     End Sub
 
 
+    Private Sub btnGenerateIDCard_Click(sender As Object, e As EventArgs) Handles btnGenerateIDCard.Click
+        'debug
+        MessageBox.Show("debug in btngenerate")
+        MessageBox.Show(txtSelectQueue_ID.Text)
+        MessageBox.Show(dgvUsers.SelectedRows.Count)
+        If dgvUsers.SelectedRows.Count > 0 Then
+            Dim studentNumber As String = dgvUsers.SelectedRows(0).Cells("student_number").Value.ToString()
+            Dim fullName As String = dgvUsers.SelectedRows(0).Cells("fname").Value.ToString() & " " &
+                                     dgvUsers.SelectedRows(0).Cells("m_i").Value.ToString() & " " &
+                                     dgvUsers.SelectedRows(0).Cells("lname").Value.ToString()
+            Dim courseYear As String = dgvUsers.SelectedRows(0).Cells("course").Value.ToString() & " " &
+                                       dgvUsers.SelectedRows(0).Cells("year_level").Value.ToString()
+
+            ' Open Form_id_card and pass the information
+            Dim idCardForm As New Form_id_card(studentNumber, fullName, courseYear)
+            idCardForm.Show()
+        Else
+            MessageBox.Show("Please select a user to generate the ID card.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+    End Sub
+
 
     
-    
-    
-    
-    
-    
-    
-    
-    
+    Private Sub dgvUsers_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvUsers.CellClick
+        Dim i As Integer
+        Dim item As String
+        Try
+            With dgvUsers
+
+                If e.RowIndex >= 0 Then
+                    i = .CurrentRow.Index
+                    txtSearchBox.Text = .Rows(i).Cells("student_num").Value.ToString
+                    LoadImage()
+                    item = .Rows(i).Cells("course").Value.ToString
+                End If
+                
+            End With
+        Catch ex As Exception
+
+        End Try
+    End Sub
 End Class
