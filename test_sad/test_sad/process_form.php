@@ -18,10 +18,10 @@ $yearlevel = $_POST['yearlevel'];
 $guardian_address = $_POST['guardian_address'];
 $guardian_name = $_POST['guardian_name'];
 $guardian_contact_number = $_POST['guardian_contact_number'];
-$student_Birthday = $_POST['student_Birthday'];
+$student_Birthday = date("F j, Y", strtotime($_POST["student_Birthday"]));
 
 
-$sql = "INSERT INTO id_process (fname, m_i, lname, course, year_level, guardian_address, guardian_name, guardian_contact_number, student_Birthday) 
+$sql = "INSERT INTO id_queue (fname, m_i, lname, course, year_level, guardian_address, guardian_name, guardian_contact_number, student_Birthday) 
         VALUES ('$firstname', '$MI', '$lastname', '$course', '$yearlevel', '$guardian_address', '$guardian_name', '$guardian_contact_number', '$student_Birthday')";
 
 if ($conn->query($sql) === TRUE) {
