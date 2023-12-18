@@ -4,6 +4,10 @@ Imports System.IO
 Public Class Form1
     Private queueIdToEdit As Integer = -1 ' Variable to store the user ID being edited
 
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Load all data into DataGridView
+        LoadDataIntoDataGridView()
+    End Sub
     Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
         ' Load all data into DataGridView
         LoadDataIntoDataGridView()
@@ -35,13 +39,13 @@ Public Class Form1
                 txtYearlevel.Text = .CurrentRow.Cells("year_level").Value.ToString
                 txtGuardianName.Text = .CurrentRow.Cells("guardian_name").Value.ToString
                 txtGuardianContactNumber.Text = .CurrentRow.Cells("guardian_contact_number").Value.ToString
-                txtAddress.Text = .CurrentRow.Cells("address").Value.ToString
+                txtAddress.Text = .CurrentRow.Cells("guardian_address").Value.ToString
                 txtBirthday.Text = .CurrentRow.Cells("student_Birthday").Value.ToString
                 txtStudentNumber.Text = .CurrentRow.Cells("student_number").Value.ToString
                 LoadImage()
             End With
         Catch ex As Exception
-
+            MessageBox.Show("Exception: " & ex.Message)
         End Try
     End Sub
 
@@ -100,9 +104,6 @@ Public Class Form1
         Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
 
-        'debug
-        MessageBox.Show("Proceed")
-
         Try
             connection.Open()
 
@@ -145,7 +146,7 @@ Public Class Form1
                 txtBirthday.Text = String.Empty
                 txtStudentNumber.Text = String.Empty
                 LoadImage()
-                MessageBox.Show("No data found for the selected user ID.")
+                MessageBox.Show("No data found for the selected queue ID.")
             End If
 
         Catch ex As Exception
@@ -173,12 +174,9 @@ Public Class Form1
 
 
         ' Store the user ID being edited from the txtSelectID TextBox
-        If Not String.IsNullOrEmpty(txtSelectQueue_ID.Text) Then
-            queueIdToEdit = Convert.ToInt32(txtSelectQueue_ID.Text)
+        If Not String.IsNullOrEmpty(txtQueue_ID.Text) Then
+            queueIdToEdit = Convert.ToInt32(txtQueue_ID.Text)
         End If
-
-        ' Debugging output
-        MessageBox.Show("EnableEditing clicked. queueIdToEdit: " & queueIdToEdit.ToString())
 
         btnSave.Enabled = True ' Enable the "Save" button
     End Sub
@@ -195,10 +193,10 @@ Public Class Form1
                 connection.Open()
 
                 ' Perform database operations to update user data
-                Dim query As String = "UPDATE id_queue SET fname = @fname, lname = @lname, m_i = @m_i, course = @course, " & _
-                                   "year_level = @year_level, guardian_name = @guardian_name, " & _
-                                   "guardian_contact_number = @guardian_contact_number, " & _
-                                   "guardian_address = @guardian_address, student_Birthday = @student_Birthday, " & _
+                Dim query As String = "UPDATE id_queue SET fname = @fname, lname = @lname, m_i = @m_i, course = @course, " &
+                                   "year_level = @year_level, guardian_name = @guardian_name, " &
+                                   "guardian_contact_number = @guardian_contact_number, " &
+                                   "guardian_address = @guardian_address, student_Birthday = @student_Birthday, " &
                                    "student_number = @student_number WHERE queue_ID = @queue_ID"
 
                 Dim command As New MySqlCommand(query, connection)
@@ -213,9 +211,6 @@ Public Class Form1
                 command.Parameters.AddWithValue("@student_Birthday", txtBirthday.Text)
                 command.Parameters.AddWithValue("@student_number", txtStudentNumber.Text)
                 command.Parameters.AddWithValue("@queue_ID", queueIdToEdit)
-
-                'debug
-                MessageBox.Show(txtStudentNumber.Text)
 
                 command.ExecuteNonQuery()
 
@@ -322,8 +317,6 @@ Public Class Form1
     'Load the image of the Student
 
     Private Sub LoadImage()
-        'enable editing
-        'EnableEditing()
 
         Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
@@ -343,8 +336,6 @@ Public Class Form1
             MessageBox.Show(dataTable.Rows.Count)
             MessageBox.Show(txtFname.Text)
             If dataTable.Rows.Count > 0 Then
-                ' debug
-                MessageBox.Show("Proceed")
                 If String.IsNullOrEmpty(dataTable.Rows(0).Item("image").ToString) Then
                     picStudent.ImageLocation = Application.StartupPath & "\Profiles\default.png"
                 Else
@@ -363,10 +354,6 @@ Public Class Form1
 
 
     Private Sub btnGenerateIDCard_Click(sender As Object, e As EventArgs) Handles btnGenerateIDCard.Click
-        'debug
-        MessageBox.Show("debug in btngenerate")
-        MessageBox.Show(txtSelectQueue_ID.Text)
-        MessageBox.Show(dgvUsers.SelectedRows.Count)
 
         If dgvUsers.SelectedRows.Count > 0 Then
             Dim studentNumber As String = dgvUsers.SelectedRows(0).Cells("student_number").Value.ToString()
@@ -383,12 +370,10 @@ Public Class Form1
             Dim idCardForm As New Form_id_card(studentNumber, fullName, courseYear, studentPic)
             idCardForm.Show()
         Else
-            MessageBox.Show("Please select a user to generate the ID card.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show("Please select a row of the student to generate the ID card.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 
-
-    
     Private Sub dgvUsers_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvUsers.CellClick
         Dim i As Integer
         Dim item As String
@@ -401,10 +386,11 @@ Public Class Form1
                     LoadImage()
                     item = .Rows(i).Cells("course").Value.ToString
                 End If
-                
+
             End With
         Catch ex As Exception
 
         End Try
     End Sub
+
 End Class

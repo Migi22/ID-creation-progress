@@ -65,7 +65,7 @@ Partial Class Form1
         '
         'btnRefresh
         '
-        Me.btnRefresh.Location = New System.Drawing.Point(415, 523)
+        Me.btnRefresh.Location = New System.Drawing.Point(565, 735)
         Me.btnRefresh.Name = "btnRefresh"
         Me.btnRefresh.Size = New System.Drawing.Size(129, 58)
         Me.btnRefresh.TabIndex = 0
@@ -75,10 +75,11 @@ Partial Class Form1
         'dgvUsers
         '
         Me.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvUsers.Location = New System.Drawing.Point(656, 61)
+        Me.dgvUsers.Location = New System.Drawing.Point(390, 246)
         Me.dgvUsers.Name = "dgvUsers"
-        Me.dgvUsers.RowTemplate.Height = 28
-        Me.dgvUsers.Size = New System.Drawing.Size(654, 202)
+        Me.dgvUsers.RowHeadersWidth = 62
+        Me.dgvUsers.RowTemplate.Height = 100
+        Me.dgvUsers.Size = New System.Drawing.Size(954, 434)
         Me.dgvUsers.TabIndex = 1
         '
         'txtFname
@@ -100,14 +101,14 @@ Partial Class Form1
         '
         'txtSelectQueue_ID
         '
-        Me.txtSelectQueue_ID.Location = New System.Drawing.Point(550, 474)
+        Me.txtSelectQueue_ID.Location = New System.Drawing.Point(390, 703)
         Me.txtSelectQueue_ID.Name = "txtSelectQueue_ID"
         Me.txtSelectQueue_ID.Size = New System.Drawing.Size(129, 26)
         Me.txtSelectQueue_ID.TabIndex = 4
         '
         'btnSelect
         '
-        Me.btnSelect.Location = New System.Drawing.Point(550, 523)
+        Me.btnSelect.Location = New System.Drawing.Point(390, 735)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.Size = New System.Drawing.Size(129, 58)
         Me.btnSelect.TabIndex = 5
@@ -133,7 +134,7 @@ Partial Class Form1
         '
         'btnEdit
         '
-        Me.btnEdit.Location = New System.Drawing.Point(685, 523)
+        Me.btnEdit.Location = New System.Drawing.Point(31, 571)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.Size = New System.Drawing.Size(129, 58)
         Me.btnEdit.TabIndex = 5
@@ -142,7 +143,7 @@ Partial Class Form1
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(820, 523)
+        Me.btnSave.Location = New System.Drawing.Point(212, 571)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(129, 58)
         Me.btnSave.TabIndex = 5
@@ -161,7 +162,7 @@ Partial Class Form1
         '
         'txtPhoto
         '
-        Me.txtPhoto.Location = New System.Drawing.Point(996, 417)
+        Me.txtPhoto.Location = New System.Drawing.Point(1010, 24)
         Me.txtPhoto.Name = "txtPhoto"
         Me.txtPhoto.ReadOnly = True
         Me.txtPhoto.Size = New System.Drawing.Size(334, 26)
@@ -169,7 +170,7 @@ Partial Class Form1
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(1177, 449)
+        Me.btnBrowse.Location = New System.Drawing.Point(1191, 56)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(153, 63)
         Me.btnBrowse.TabIndex = 7
@@ -178,7 +179,7 @@ Partial Class Form1
         '
         'btnSaveImage
         '
-        Me.btnSaveImage.Location = New System.Drawing.Point(1177, 518)
+        Me.btnSaveImage.Location = New System.Drawing.Point(1191, 125)
         Me.btnSaveImage.Name = "btnSaveImage"
         Me.btnSaveImage.Size = New System.Drawing.Size(153, 63)
         Me.btnSaveImage.TabIndex = 7
@@ -191,7 +192,7 @@ Partial Class Form1
         '
         'picImportStudent
         '
-        Me.picImportStudent.Location = New System.Drawing.Point(996, 449)
+        Me.picImportStudent.Location = New System.Drawing.Point(1010, 56)
         Me.picImportStudent.Name = "picImportStudent"
         Me.picImportStudent.Size = New System.Drawing.Size(175, 132)
         Me.picImportStudent.TabIndex = 8
@@ -355,25 +356,26 @@ Partial Class Form1
         '
         'btnGenerateIDCard
         '
-        Me.btnGenerateIDCard.Location = New System.Drawing.Point(44, 589)
+        Me.btnGenerateIDCard.Location = New System.Drawing.Point(735, 735)
         Me.btnGenerateIDCard.Name = "btnGenerateIDCard"
-        Me.btnGenerateIDCard.Size = New System.Drawing.Size(109, 50)
+        Me.btnGenerateIDCard.Size = New System.Drawing.Size(123, 58)
         Me.btnGenerateIDCard.TabIndex = 9
         Me.btnGenerateIDCard.Text = "Generate ID Card"
         Me.btnGenerateIDCard.UseVisualStyleBackColor = True
         '
         'txtSearchBox
         '
-        Me.txtSearchBox.Location = New System.Drawing.Point(656, 29)
+        Me.txtSearchBox.Location = New System.Drawing.Point(390, 214)
         Me.txtSearchBox.Name = "txtSearchBox"
-        Me.txtSearchBox.Size = New System.Drawing.Size(654, 26)
+        Me.txtSearchBox.Size = New System.Drawing.Size(954, 26)
         Me.txtSearchBox.TabIndex = 10
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1356, 681)
+        Me.AutoSize = True
+        Me.ClientSize = New System.Drawing.Size(1356, 957)
         Me.Controls.Add(Me.txtSearchBox)
         Me.Controls.Add(Me.btnGenerateIDCard)
         Me.Controls.Add(Me.picImportStudent)
