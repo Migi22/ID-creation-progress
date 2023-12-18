@@ -367,6 +367,7 @@ Public Class Form1
         MessageBox.Show("debug in btngenerate")
         MessageBox.Show(txtSelectQueue_ID.Text)
         MessageBox.Show(dgvUsers.SelectedRows.Count)
+
         If dgvUsers.SelectedRows.Count > 0 Then
             Dim studentNumber As String = dgvUsers.SelectedRows(0).Cells("student_number").Value.ToString()
             Dim fullName As String = dgvUsers.SelectedRows(0).Cells("fname").Value.ToString() & " " &
@@ -374,9 +375,12 @@ Public Class Form1
                                      dgvUsers.SelectedRows(0).Cells("lname").Value.ToString()
             Dim courseYear As String = dgvUsers.SelectedRows(0).Cells("course").Value.ToString() & " " &
                                        dgvUsers.SelectedRows(0).Cells("year_level").Value.ToString()
+            Dim studentPic As String = dgvUsers.SelectedRows(0).Cells("image").Value.ToString()
+
+
 
             ' Open Form_id_card and pass the information
-            Dim idCardForm As New Form_id_card(studentNumber, fullName, courseYear)
+            Dim idCardForm As New Form_id_card(studentNumber, fullName, courseYear, studentPic)
             idCardForm.Show()
         Else
             MessageBox.Show("Please select a user to generate the ID card.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)

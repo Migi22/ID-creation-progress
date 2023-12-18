@@ -46,8 +46,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="messagingtoolkit.barcode">
-      <HintPath>..\..\messagingtoolkit.barcode.dll</HintPath>
+    <Reference Include="MessagingToolkit.Barcode, Version=1.7.0.1, Culture=neutral, PublicKeyToken=4d44dd7196d3c1ac, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BarcodeVS_nosware.com\MessagingToolkit.Barcode.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=8.2.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
