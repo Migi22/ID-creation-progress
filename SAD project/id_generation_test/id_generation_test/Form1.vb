@@ -79,6 +79,8 @@ Public Class Form1
         Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
 
+
+
         Try
             connection.Open()
 
@@ -90,6 +92,30 @@ Public Class Form1
 
             ' Bind DataTable to DataGridView
             dgvUsers.DataSource = dataTable
+
+
+            If dataTable.Rows.Count > 0 Then
+                dgvUsers.DataSource = dataTable
+
+                dataTable.Columns.Add("PROFILE", GetType(Byte()))
+                For Each row As DataRow In dataTable.Rows
+                    If row("image").ToString = "" Then
+                        row("PROFILE") = File.ReadAllBytes(Application.StartupPath & "\Profiles\default.png")
+                    Else
+                        row("PROFILE") = File.ReadAllBytes(Application.StartupPath & "\Profiles\" & Path.GetFileName(row("image").ToString()))
+                    End If
+                Next
+
+                Dim img As New DataGridViewImageColumn()
+                img = dgvUsers.Columns(12)
+                img.ImageLayout = DataGridViewImageCellLayout.Stretch
+
+
+            End If
+
+
+
+
 
         Catch ex As Exception
             MessageBox.Show("Error: " & ex.Message)
@@ -103,6 +129,8 @@ Public Class Form1
     Private Sub LoadUserDataById(queueID As Integer)
         Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
         Dim connection As New MySqlConnection(connectionString)
+
+
 
         Try
             connection.Open()
@@ -333,8 +361,9 @@ Public Class Form1
             Dim dataTable As New DataTable()
             adapter.Fill(dataTable)
 
-            MessageBox.Show(dataTable.Rows.Count)
-            MessageBox.Show(txtFname.Text)
+            'debug 
+            'MessageBox.Show(dataTable.Rows.Count)
+            'MessageBox.Show(txtFname.Text)
             If dataTable.Rows.Count > 0 Then
                 If String.IsNullOrEmpty(dataTable.Rows(0).Item("image").ToString) Then
                     picStudent.ImageLocation = Application.StartupPath & "\Profiles\default.png"
@@ -352,28 +381,40 @@ Public Class Form1
         End Try
     End Sub
 
-
+    'Button to generate a ID card
     Private Sub btnGenerateIDCard_Click(sender As Object, e As EventArgs) Handles btnGenerateIDCard.Click
 
         If dgvUsers.SelectedRows.Count > 0 Then
             Dim studentNumber As String = dgvUsers.SelectedRows(0).Cells("student_number").Value.ToString()
-            Dim fullName As String = dgvUsers.SelectedRows(0).Cells("fname").Value.ToString() & " " &
-                                     dgvUsers.SelectedRows(0).Cells("m_i").Value.ToString() & " " &
-                                     dgvUsers.SelectedRows(0).Cells("lname").Value.ToString()
+            Dim fname_mi As String = dgvUsers.SelectedRows(0).Cells("fname").Value.ToString() & " " &
+                                     dgvUsers.SelectedRows(0).Cells("m_i").Value.ToString()
+
+            Dim lname As String = dgvUsers.SelectedRows(0).Cells("lname").Value.ToString()
+
             Dim courseYear As String = dgvUsers.SelectedRows(0).Cells("course").Value.ToString() & " " &
                                        dgvUsers.SelectedRows(0).Cells("year_level").Value.ToString()
+
+            Dim birthday As String = dgvUsers.SelectedRows(0).Cells("student_Birthday").Value.ToString()
+
+            Dim guardian_name As String = dgvUsers.SelectedRows(0).Cells("guardian_name").Value.ToString()
+
+            Dim guardian_number As String = dgvUsers.SelectedRows(0).Cells("guardian_contact_number").Value.ToString()
+
+            Dim address As String = dgvUsers.SelectedRows(0).Cells("guardian_address").Value.ToString()
+
             Dim studentPic As String = dgvUsers.SelectedRows(0).Cells("image").Value.ToString()
 
 
 
             ' Open Form_id_card and pass the information
-            Dim idCardForm As New Form_id_card(studentNumber, fullName, courseYear, studentPic)
+            Dim idCardForm As New Form_id_card(studentNumber, fname_mi, lname, courseYear, birthday, guardian_name, guardian_number, address, studentPic)
             idCardForm.Show()
         Else
             MessageBox.Show("Please select a row of the student to generate the ID card.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 
+    'function for clicking a cell
     Private Sub dgvUsers_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvUsers.CellClick
         Dim i As Integer
         Dim item As String
@@ -391,6 +432,59 @@ Public Class Form1
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    'SEARCH BAR
+    Private Sub txtSearchBox_TextChanged(sender As Object, e As EventArgs) Handles txtSearchBox.TextChanged
+        Dim connectionString As String = "server=localhost;user=root;password=;database=id_process;"
+        Dim connection As New MySqlConnection(connectionString)
+        Dim dt As New DataTable()
+
+
+        Try
+            connection.Open()
+
+            ' Perform database operations to get user data by ID
+            Dim query As String = "SELECT * FROM id_queue WHERE fname LIKE @searchText OR lname LIKE @searchText"
+            Dim adapter As New MySqlDataAdapter(query, connection)
+            adapter.SelectCommand.Parameters.AddWithValue("@searchText", "%" & txtSearchBox.Text & "%")
+            adapter.Fill(dt)
+
+
+            If dt.Rows.Count > 0 Then
+                dgvUsers.DataSource = dt
+
+                'insert the information to the text box
+                txtQueue_ID.Text = dt.Rows(0).Item("queue_ID").ToString()
+                txtFname.Text = dt.Rows(0).Item("fname").ToString()
+                txtLname.Text = dt.Rows(0).Item("lname").ToString()
+                txtMi.Text = dt.Rows(0).Item("m_i").ToString()
+                txtCourse.Text = dt.Rows(0).Item("course").ToString()
+                txtYearlevel.Text = dt.Rows(0).Item("year_level").ToString()
+                txtGuardianName.Text = dt.Rows(0).Item("guardian_name").ToString()
+                txtGuardianContactNumber.Text = dt.Rows(0).Item("guardian_contact_number").ToString()
+                txtAddress.Text = dt.Rows(0).Item("guardian_address").ToString()
+                txtBirthday.Text = dt.Rows(0).Item("student_Birthday").ToString()
+                txtStudentNumber.Text = dt.Rows(0).Item("student_number").ToString()
+
+                'insert image to the picStudent
+                If String.IsNullOrEmpty(dt.Rows(0).Item("image").ToString) Then
+                    picStudent.ImageLocation = Application.StartupPath & "\Profiles\default.png"
+                Else
+                    picStudent.ImageLocation = Application.StartupPath & "\Profiles\" & dt.Rows(0).Item("image").ToString
+                End If
+
+            Else
+
+            End If
+
+
+        Catch ex As Exception
+
+        Finally
+            connection.Close()
+        End Try
+
     End Sub
 
 End Class

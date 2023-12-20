@@ -3,27 +3,42 @@ Imports MySql.Data.MySqlClient
 
 Public Class Form_id_card
     Private bitmap As Bitmap
+    Private bitmapBack As Bitmap
     Private WithEvents ppd As New PrintPreviewDialog
     Private studentNumber As String
-    Private fullName As String
+    Private fname_mi As String
+    Private lname As String
     Private courseYear As String
+    Private birthdate As String
+    Private guardian_name As String
+    Private guardian_number As String
+    Private address As String
     Private studentPicPath As String
 
     ' Modify the constructor to receive information
-    Public Sub New(studentNumber As String, fullName As String, courseYear As String, studentPicPath As String)
+    Public Sub New(studentNumber As String, fname_mi As String, lname As String, courseYear As String, birthdate As String, guardian_name As String, guardian_number As String, address As String, studentPic As String)
         InitializeComponent()
         Me.studentNumber = studentNumber
-        Me.fullName = fullName
+        Me.fname_mi = fname_mi
+        Me.lname = lname
         Me.courseYear = courseYear
-        Me.studentPicPath = studentPicPath
-        MessageBox.Show(studentPicPath)
-        
+        Me.birthdate = birthdate
+        Me.guardian_name = guardian_name
+        Me.guardian_number = guardian_number
+        Me.address = address
+        Me.studentPicPath = studentPic
+
     End Sub
 
     Private Sub Form_id_card_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         txtStudent_num.Text = studentNumber
-        txtFullName.Text = fullName
+        txtFname_mi.Text = fname_mi
+        txtLname.Text = lname
         txtCourse_Year.Text = courseYear
+        txtBirthdate.Text = birthdate
+        txtGuardianName.Text = guardian_name
+        txtGuardianNumber.Text = guardian_number
+        txtAddress.Text = address
 
 
 
@@ -86,10 +101,25 @@ Public Class Form_id_card
 
     Public Sub Print()
         'Create a bitmap of the specific area (panel) you want to print
-        Dim rect As New Rectangle(front_id.Location, front_id.Size)
+        Dim rectFront As New Rectangle(front_id.Location, front_id.Size)
+        Dim rectBack As New Rectangle(back_id.Location, back_id.Size)
 
-        bitmap = New Bitmap(rect.Width, rect.Height)
-        front_id.DrawToBitmap(bitmap, rect)
+        bitmap = New Bitmap(rectFront.Width + rectBack.Width, Math.Max(rectFront.Height, rectBack.Height))
+
+        ' Draw front_id and back_id to the bitmap
+        Using g As Graphics = Graphics.FromImage(bitmap)
+            front_id.DrawToBitmap(bitmap, rectFront)
+            g.TranslateTransform(rectFront.Width, 0) ' Move to the right of front_id
+            back_id.DrawToBitmap(bitmap, rectBack)
+        End Using
+
+
+
+
+
+
+
+
 
         ' Set up the PrintDocument and PrintPreviewDialog
         PrintDocument1.DefaultPageSettings.Landscape = False
@@ -103,8 +133,9 @@ Public Class Form_id_card
 
     End Sub
 
-
     Private Sub picProfile_Click(sender As Object, e As EventArgs) Handles picProfile.Click
         Print()
     End Sub
+
+
 End Class

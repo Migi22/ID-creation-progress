@@ -58,6 +58,7 @@ Partial Class Form1
         Me.lblAddress = New System.Windows.Forms.Label()
         Me.btnGenerateIDCard = New System.Windows.Forms.Button()
         Me.txtSearchBox = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         CType(Me.dgvUsers, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picStudent, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picImportStudent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -365,10 +366,19 @@ Partial Class Form1
         '
         'txtSearchBox
         '
-        Me.txtSearchBox.Location = New System.Drawing.Point(390, 214)
+        Me.txtSearchBox.Location = New System.Drawing.Point(455, 214)
         Me.txtSearchBox.Name = "txtSearchBox"
-        Me.txtSearchBox.Size = New System.Drawing.Size(954, 26)
+        Me.txtSearchBox.Size = New System.Drawing.Size(223, 26)
         Me.txtSearchBox.TabIndex = 10
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(386, 214)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(63, 20)
+        Me.Label3.TabIndex = 11
+        Me.Label3.Text = "Seach :"
         '
         'Form1
         '
@@ -376,6 +386,7 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(1356, 957)
+        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.txtSearchBox)
         Me.Controls.Add(Me.btnGenerateIDCard)
         Me.Controls.Add(Me.picImportStudent)
@@ -456,5 +467,5 @@ Partial Class Form1
     Friend WithEvents lblAddress As System.Windows.Forms.Label
     Friend WithEvents btnGenerateIDCard As System.Windows.Forms.Button
     Friend WithEvents txtSearchBox As System.Windows.Forms.TextBox
-
+    Friend WithEvents Label3 As Label
 End Class
