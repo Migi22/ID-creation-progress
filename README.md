@@ -2,5 +2,6 @@
 for the SAD project prototype
 
 LATEST VERSION
-  Beta v2
-  1.) added a feature where you can edit the values in the text box and then save it to the database.
+Beta v3.2
+1.) Fix the ID generation
+
